@@ -10,6 +10,6 @@ public interface UserService {
 
 	
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(UserRequest userrequest);
-	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteUser(int userid);
+	public ResponseEntity<ResponseStructure<String>> softDeleteUser(int userid);
 	public ResponseEntity<ResponseStructure<UserResponse>> findUserById(int userid);
 }

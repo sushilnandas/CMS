@@ -1,30 +1,38 @@
 package com.example.cms.dto;
 
-import org.springframework.context.annotation.Configuration;
 
+
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
 
 
-@Configuration
-@AllArgsConstructor
-@NoArgsConstructor
+
+
 public class UserRequest {
 
-	@NotNull
+	@NotNull(message="Enter user name")
 	private String username;
-	
-	@Email(regexp="^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
-			)
+
+	@NotNull(message="Invalid email")
+	@Column(unique= true)
+	@Email
+	(regexp="^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
+
 	private String email;
-	@Pattern(regexp= "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
-			message = "Enter a valid password with 8 digit of length an Uppercase , a special character and a number")
+
+	@NotBlank(message="enter a password")
+	@NotNull(message="enter a password")
+	@Size(min=8,max=20,message="Password characters should exist with 8 to 20 characters")
+	@Pattern
+	(regexp= "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
+	message = "Enter a valid password with 8 digit of length an Uppercase , a special character and a number")
+
 	private String password;
-	private boolean delete;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -43,11 +51,4 @@ public class UserRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public boolean isDelete() {
-		return delete;
-	}
-	public void setDelete(boolean delete) {
-		this.delete = delete;
-	}
-	
 }

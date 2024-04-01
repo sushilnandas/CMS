@@ -38,7 +38,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/users/deleteByUserId/{userid}")
-	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteUser(@PathVariable int userid){
+	public ResponseEntity<ResponseStructure<String>> softDeleteUser(@PathVariable int userid){
 		return userservice.softDeleteUser(userid);
 	}
 	
@@ -47,9 +47,4 @@ public class UserController {
 	public String test() {
 		return "Hello from cms";
 	}
-//	
-//	@DeleteMapping("/users/deleteById/{userid}")
-//	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteUser(@PathVariable int userid){
-//	return userservice.softDeleteUser(userid);	
-//	}
 }

@@ -2,13 +2,14 @@ package com.example.cms.dtoresponse;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
+
 import lombok.Builder;
-import lombok.NoArgsConstructor;
+
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class UserResponse {
 
 	private int userid;
@@ -17,7 +18,7 @@ public class UserResponse {
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime lastModifiedAt;
-	private boolean delete ;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -48,12 +49,7 @@ public class UserResponse {
 	public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
 		this.lastModifiedAt = lastModifiedAt;
 	}
-	public boolean isDelete() {
-		return delete;
-	}
-	public void setDelete(boolean delete) {
-		this.delete = delete;
-	}
+	
 	
 	
 }

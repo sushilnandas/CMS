@@ -20,24 +20,25 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-
+   
 	private UserRepository userrepo;
 	private ResponseStructure<UserResponse> structure;
 	private PasswordEncoder passwordencorder;
-	
+	private ResponseStructure<String> responseStructureString;
+
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(  UserRequest userrequest) {
-		
+
 		if(userrepo.existsByEmail(userrequest.getEmail()))
 			throw new UserAlreadyExistEmailException("Failed to register user");
-		
-			User user = userrepo.save(mapToUserEntity(userrequest, new User()));
+
+		User user = userrepo.save(mapToUserEntity(userrequest, new User()));
 		return ResponseEntity.ok(structure
 				.setStatuscode(HttpStatus.OK.value())
 				.setMessage("registered user successfully")
 				.setBody(maptoUserResponse(user))
-			);
-		
+				);
+
 	}
 
 	private UserResponse maptoUserResponse(User user) {
@@ -47,65 +48,55 @@ public class UserServiceImpl implements UserService {
 				.email(user.getEmail())
 				.createdAt(user.getCreatedAt())
 				.lastModifiedAt(user.getLastModifiedAt())
-				.delete(true)
 				.build();
 	}
 
 	private User mapToUserEntity(  UserRequest userrequest, User user) {
 		user.setEmail(userrequest.getEmail());
-		
+
 		user.setUsername(userrequest.getUsername());
 		user.setPassword(passwordencorder.encode(userrequest.getPassword()));
-		
+
 		return user;
 	}
 
-	
+
 	@Override
-	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteUser(int userid) {
-		
-		User user =userrepo.findById(userid).orElseThrow(()-> new UserNotFoundByIdException("Delete not done"));
-		user.setDelete(true);
-		userrepo.save(user);
-		
-		return ResponseEntity.ok(structure.setStatuscode(HttpStatus.OK.value())
-				.setMessage("SoftDeleted")
-				.setBody(maptoUserResponse( new User(),true)));
-		
+	public ResponseEntity<ResponseStructure<String>> softDeleteUser(int userid) {
+
+	return userrepo.findById(userid).map(user->{
+			user.setDelete(true);
+			userrepo.save(user);
+			return ResponseEntity
+					.ok(responseStructureString.setStatuscode(HttpStatus.OK.value())
+					.setMessage("Id is deleted")
+					.setBody("Your userID is deactivated"));
+
+	}).orElseThrow(()-> new UserNotFoundByIdException("The Id to be deleted is not found"));
 	}
 
-	private UserResponse maptoUserResponse(User user, boolean delete) {
-		return UserResponse.builder()
-				.userid(user.getUserid())
-				.username(user.getUsername())
-				.email(user.getEmail())
-				.createdAt(user.getCreatedAt())
-				.lastModifiedAt(user.getLastModifiedAt())
-				
-				.build();
-	}
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> findUserById(int userid) {
-//		
-//		
-//		User user = userrepo.findById(userid)
-//				.orElseThrow(()->new UserNotFoundByIdException("The user id is not found"));
-//
-//			
-//		return ResponseEntity.ok(structure.setStatuscode(HttpStatus.OK.value())
-//				.setMessage("User deleted")
-//				.setBody(maptoUserResponse(user)));
-		return null;
-	
+//				
+//				
+				User user = userrepo.findById(userid)
+						.orElseThrow(()->new UserNotFoundByIdException("The user id is not found"));
 		
-	
+					
+				return ResponseEntity.ok(structure.setStatuscode(HttpStatus.OK.value())
+						.setMessage("User found")
+						.setBody(maptoUserResponse(user)));
+		//return null;
+
+
+
 	}
-	
-	
 
 
-	
-	
+
+
+
+
 }
 
 

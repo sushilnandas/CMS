@@ -1,8 +1,7 @@
 package com.example.cms.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,7 +13,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.Table;
 
 
@@ -22,8 +21,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="users")
 @EntityListeners(AuditingEntityListener.class)
-//@Getter
-//@Setter
 public class User {
 	@Id
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)
@@ -40,6 +37,8 @@ public class User {
 	private LocalDateTime createdAt;
 	@LastModifiedDate
 	private LocalDateTime lastModifiedAt;
+	
+	@Column( columnDefinition  = "boolean default false")
 	private boolean delete;
 	//@OneToMany(mappedBy ="user")
 	//private List<Blog> blogs = new ArrayList<Blog>();
