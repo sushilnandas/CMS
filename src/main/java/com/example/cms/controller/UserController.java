@@ -37,9 +37,9 @@ public class UserController {
 		return userservice.findUserById(userid);
 	}
 	
-	@DeleteMapping("/users/deleteByUserId/{userid}")
-	public ResponseEntity<ResponseStructure<String>> softDeleteUser(@PathVariable int userid){
-		return userservice.softDeleteUser(userid);
+	@DeleteMapping("/users/deletedUserById/{userid}")
+	public ResponseEntity<ResponseStructure<UserResponse>> softDeletedUser(@PathVariable int userid){
+		return userservice.softDeletedUser(userid);
 	}
 	
 	@GetMapping("/test")

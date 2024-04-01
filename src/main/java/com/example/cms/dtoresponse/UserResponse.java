@@ -18,6 +18,7 @@ public class UserResponse {
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime lastModifiedAt;
+	private Boolean deleted;
 	
 	public String getUsername() {
 		return username;
@@ -48,6 +49,12 @@ public class UserResponse {
 	}
 	public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
 		this.lastModifiedAt = lastModifiedAt;
+	}
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	public void setDelete(Boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 	

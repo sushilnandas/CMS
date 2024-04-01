@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Blog {
@@ -14,6 +15,9 @@ public class Blog {
 	private String title;
 	private String[] topics;
 	private String about;
+	
+	@ManyToOne
+	private User user;
 	public int getBlogId() {
 		return blogId;
 	}

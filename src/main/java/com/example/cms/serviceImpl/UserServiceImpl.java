@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userrepo;
 	private ResponseStructure<UserResponse> structure;
 	private PasswordEncoder passwordencorder;
-	private ResponseStructure<String> responseStructureString;
+
 
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(  UserRequest userrequest) {
@@ -48,11 +48,13 @@ public class UserServiceImpl implements UserService {
 				.email(user.getEmail())
 				.createdAt(user.getCreatedAt())
 				.lastModifiedAt(user.getLastModifiedAt())
+				.deleted(user.getDeleted())
 				.build();
 	}
 
 	private User mapToUserEntity(  UserRequest userrequest, User user) {
 		user.setEmail(userrequest.getEmail());
+		user.setDeleted(false);
 
 		user.setUsername(userrequest.getUsername());
 		user.setPassword(passwordencorder.encode(userrequest.getPassword()));
@@ -62,15 +64,15 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public ResponseEntity<ResponseStructure<String>> softDeleteUser(int userid) {
+	public ResponseEntity<ResponseStructure<UserResponse>> softDeletedUser(int userid) {
 
 	return userrepo.findById(userid).map(user->{
 			user.setDelete(true);
 			userrepo.save(user);
 			return ResponseEntity
-					.ok(responseStructureString.setStatuscode(HttpStatus.OK.value())
+					.ok(structure.setStatuscode(HttpStatus.OK.value())
 					.setMessage("Id is deleted")
-					.setBody("Your userID is deactivated"));
+					.setBody(maptoUserResponse(user)));
 
 	}).orElseThrow(()-> new UserNotFoundByIdException("The Id to be deleted is not found"));
 	}
@@ -86,7 +88,6 @@ public class UserServiceImpl implements UserService {
 				return ResponseEntity.ok(structure.setStatuscode(HttpStatus.OK.value())
 						.setMessage("User found")
 						.setBody(maptoUserResponse(user)));
-		//return null;
 
 
 

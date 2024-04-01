@@ -1,7 +1,8 @@
 package com.example.cms.entity;
 
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,7 +14,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -24,30 +25,31 @@ import jakarta.persistence.Table;
 public class User {
 	@Id
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)
-    private int userid;
-	
+	private int userid;
+
 	private String username;
-	
+
 	private String email;
-    
-	
+
+
 	private String password;
 	@CreatedDate
 	@Column(updatable = false)
 	private LocalDateTime createdAt;
 	@LastModifiedDate
 	private LocalDateTime lastModifiedAt;
-	
-	@Column( columnDefinition  = "boolean default false")
-	private boolean delete;
-	//@OneToMany(mappedBy ="user")
-	//private List<Blog> blogs = new ArrayList<Blog>();
-	//public List<Blog> getBlogs() {
-	//	return blogs;
-	//}
-	//public void setBlogs(List<Blog> blogs) {
-		//this.blogs = blogs;
-	//}
+
+
+
+	private Boolean deleted;
+	@OneToMany(mappedBy ="user")
+	private List <Blog> blogs = new ArrayList<Blog>();
+	public List<Blog> getBlogs() {
+		return blogs;
+	}
+	public void setBlogs(List<Blog> blogs) {
+	this.blogs = blogs;
+	}
 	public int getUserid() {
 		return userid;
 	}
@@ -63,11 +65,18 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	public String getPassword() {
 		return password;
+	}
+	public Boolean getDelete() {
+		return deleted;
+	}
+	public void setDelete(Boolean deleted) {
+		this.deleted = deleted;
 	}
 	public void setPassword(String password) {
 		this.password = password;
@@ -84,13 +93,14 @@ public class User {
 	public void setLastModifiedAt(LocalDateTime lastModifiedAt) {
 		this.lastModifiedAt = lastModifiedAt;
 	}
-	public boolean isDelete() {
-		return delete;
+	public Boolean getDeleted() {
+		return deleted;
 	}
-	public void setDelete(boolean delete) {
-		this.delete = delete;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
-	
+
+
 
 
 
